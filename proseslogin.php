@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
         if ($result->num_rows > 0) {
             $_SESSION['user_type'] = 'admin';
             $_SESSION['username'] = $username;
-            header("Location: halamanadmin.php");
+            header("Location: admin/halamanadmin.php");
             exit;
         } else {
             $error = "Login admin gagal!";

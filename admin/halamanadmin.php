@@ -196,7 +196,7 @@
             <div class="nav-menu">
                 <a href="#data-aspirasi">Data Aspirasi</a>
                 <a href="#histori">Histori</a>
-                <a href="login.php" class="logout-btn">Logout</a>
+                <a href="../login.php" class="logout-btn">Logout</a>
             </div>
         </div>
     </nav>

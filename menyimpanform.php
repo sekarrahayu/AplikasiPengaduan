@@ -10,4 +10,5 @@ mysqli_query($koneksi, "INSERT INTO input_aspirasi SET id_kategori = '$kategori'
 
 //untuk query input ke option
 $query = mysqli_query($koneksi, "SELECT * FROM kategori");
+
 ?>
