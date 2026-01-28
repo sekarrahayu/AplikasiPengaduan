@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -185,17 +186,17 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav>
         <div class="container">
-            <a href="halamanadmin.php" class="logo">
+            <div class="logo">
                 <i class="bi bi-heart-fill"></i>
                 Aspirasi
-            </a>
+            </div>
             <div class="nav-menu">
-                <a href="#data-aspirasi">Data Aspirasi</a>
-                <a href="#histori">Histori</a>
+                <a href="#histori.php">Histori</a>
                 <a href="login.php" class="logout-btn">Logout</a>
             </div>
         </div>
@@ -204,21 +205,27 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
-            <h1><i class="bi bi-shield-check"></i> Dashboard Admin</h1>
-            
+            <h1>Dashboard Siswa</h1>
+
             <div class="menu-grid">
-                <a href="inputdatasiswa.php" class="menu-card">
-                    <i class="bi bi-person-plus"></i>
-                    <h3>Input Data Siswa</h3>
-                    <p>Tambahkan data siswa baru ke sistem</p>
+                <a href="form-pengaduan.php" class="menu-card">
+                    <i class="bi bi-journal-plus"></i>
+                    <h3>Isi Pengaduan</h3>
+                    <p>Beritahu pihak sekolah tentang apa yang terjadi</p>
                 </a>
-                <a href="inputkategori.php" class="menu-card">
-                    <i class="bi bi-tag-fill"></i>
-                    <h3>Input Kategori Baru</h3>
-                    <p>Tambahkan kategori pengaduan baru</p>
+                <a href="datapengaduan.php" class="menu-card">
+                    <i class="bi bi-eye"></i>
+                    <h3>Data Pengaduan</h3>
+                    <p>Lihat pengaduan yang sudah kamu kirim</p>
+                </a>
+                <a href="#histori.php" class="menu-card">
+                    <i class="bi bi-key-fill"></i>
+                    <h3>Ganti Password</h3>
+                    <p>Ubah password akun kamu</p>
                 </a>
             </div>
         </div>
     </div>
 </body>
+
 </html>
