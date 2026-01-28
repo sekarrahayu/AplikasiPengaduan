@@ -56,7 +56,7 @@ $queryaspirasi = mysqli_query($koneksi, "SELECT input_aspirasi.nis, kategori.jen
   <body>
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Data Aspirasi</h1>
+        <h1 class="mb-0">Data Pengaduan</h1>
         <a href="halamanadmin.php" class="btn btn-light">
           <i class="bi bi-arrow-left"></i> Kembali
         </a>
