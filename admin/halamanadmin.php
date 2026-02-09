@@ -196,7 +196,7 @@
             <div class="nav-menu">
                 <a href="datasiswa.php">Data Siswa</a>
                 <a href="dataaspirasi.php">Data Pengaduan</a>
-                <a href="#histori.php">Histori</a>
+                <a href="historiadmin.php">Histori</a>
                 <a href="../login.php" class="logout-btn">Logout</a>
             </div>
         </div>

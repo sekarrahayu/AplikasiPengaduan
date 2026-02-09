@@ -1,3 +1,16 @@
+<?php
+include 'koneksi.php'; // pastikan koneksi ke database
+
+session_start();
+if (!isset($_SESSION['nis'])) {
+    header("Location: login.php"); // kalau belum login, redirect
+    exit;
+}
+
+// ambil semua kategori
+$queryKategori = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY jenis_kategori ASC");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,6 +121,12 @@
                 <label>Kategori:</label>
                 <select id="kategori" name="kategori" required>
                     <option value="">-- pilih kategori --</option>
+                    <?php
+                    // loop untuk menampilkan semua kategori
+                    while($kategori = mysqli_fetch_array($queryKategori)){
+                        echo '<option value="'.$kategori['id_kategori'].'">'.$kategori['jenis_kategori'].'</option>';
+                    }
+                    ?>
                 </select>
             </div>
 
