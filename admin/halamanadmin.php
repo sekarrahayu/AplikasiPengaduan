@@ -46,11 +46,6 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        nav .logo:hover {
-            transform: scale(1.05);
         }
 
         nav .logo i {
@@ -194,6 +189,7 @@
                 Aspirasi
             </a>
             <div class="nav-menu">
+                <a href="datakategori.php">Data Kategori</a>
                 <a href="datasiswa.php">Data Siswa</a>
                 <a href="dataaspirasi.php">Data Pengaduan</a>
                 <a href="historiadmin.php">Histori</a>
@@ -205,7 +201,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
-            <h1><i class="bi bi-shield-check"></i> Dashboard Admin</h1>
+            <h1><i class="bi bi-shield-check"></i> Halaman Admin</h1>
             
             <div class="menu-grid">
                 <a href="inputdatasiswa.php" class="menu-card">

@@ -19,30 +19,42 @@ $queryKategori = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY jenis_k
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Form</title>
     <style>
-        body {
+        /* Gradient background: ocean blue -> skyblue -> white */
+        html, body {
+            height: 100%;
+            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
+            background: linear-gradient(135deg, #0077be 0%, #87CEEB 55%, #ffffff 100%);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            box-sizing: border-box;
         }
 
         .form-container {
-            background: white;
-            padding: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 36px 30px 26px 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            max-width: 520px;
+            width: 100%;
+            position: relative;
         }
 
         .form-container h1 {
-            color: #333;
+            color: #034f84;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
+            font-size: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 16px; }
 
         label {
             display: block;
@@ -56,8 +68,8 @@ $queryKategori = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY jenis_k
         select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #cbdfe8;
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 14px;
         }
@@ -66,54 +78,69 @@ $queryKategori = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY jenis_k
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+            border-color: #0077be;
+            box-shadow: 0 0 6px rgba(0,119,190,0.18);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+        textarea { resize: vertical; min-height: 100px; }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 30px;
-        }
+        .button-group { display: flex; gap: 10px; margin-top: 20px; }
 
         button {
             flex: 1;
             padding: 12px;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: bold;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform .12s ease, box-shadow .12s ease;
         }
 
         .submit-btn {
-            background-color: #4CAF50;
-            color: white;
+            background: linear-gradient(90deg,#0077be,#87CEEB);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(3,79,132,0.08);
         }
 
-        .submit-btn:hover {
-            background-color: #45a049;
-        }
+        .submit-btn:hover { transform: translateY(-2px); }
 
         .reset-btn {
-            background-color: #f44336;
+            background: #f44336;
             color: white;
         }
 
-        .reset-btn:hover {
-            background-color: #da190b;
+        .reset-btn:hover { opacity: .95; }
+
+        /* Back button inside form container (top-left) */
+        .btn-kembali {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, rgba(0,119,190,0.08), rgba(135,206,235,0.06));
+            color: #034f84;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid rgba(3,79,132,0.12);
+        }
+
+        .btn-kembali:hover {
+            background: linear-gradient(90deg,#0077be,#87CEEB);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(3,79,132,0.12);
         }
     </style>
 </head>
 
 <body>
     <div class="form-container">
+        <a href="halamansiswa.php" class="btn-kembali">⬅ Kembali</a>
         <h1>Form Pengaduan</h1>
         <form method="POST" action="menyimpanform.php">
 

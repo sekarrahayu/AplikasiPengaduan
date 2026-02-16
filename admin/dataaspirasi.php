@@ -4,18 +4,60 @@ include '../koneksi.php';
 // ambil filter dari URL (GET)
 $dari = isset($_GET['dari']) ? $_GET['dari'] : '';
 $sampai = isset($_GET['sampai']) ? $_GET['sampai'] : '';
+$nama = isset($_GET['nama']) ? $_GET['nama'] : '';
+$kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+$status = isset($_GET['status']) ? $_GET['status'] : '';
 
-$where = '';
+$where = [];
+
+// filter tanggal
 if ($dari && $sampai) {
-    $where = "WHERE date BETWEEN '$dari' AND '$sampai'";
+  $where[] = "input_aspirasi.date BETWEEN '$dari' AND '$sampai'";
 } elseif ($dari) {
-    $where = "WHERE date >= '$dari'";
+  $where[] = "input_aspirasi.date >= '$dari'";
 } elseif ($sampai) {
-    $where = "WHERE date <= '$sampai'";
+  $where[] = "input_aspirasi.date <= '$sampai'";
 }
 
-$queryaspirasi = mysqli_query($koneksi, "SELECT input_aspirasi.id_pelaporan,input_aspirasi.nis, input_aspirasi.date, kategori.jenis_kategori, input_aspirasi.lokasi, input_aspirasi.keterangan, input_aspirasi.status, input_aspirasi.feedback FROM input_aspirasi INNER JOIN kategori ON input_aspirasi.id_kategori = kategori.id_kategori $where
-  ORDER BY input_aspirasi.date DESC");
+// filter nama
+if ($nama) {
+  $where[] = "siswa.nama LIKE '%$nama%'";
+}
+
+// filter kategori
+if ($kategori) {
+  $where[] = "input_aspirasi.id_kategori = '$kategori'";
+}
+
+// filter status
+if ($status) {
+  $where[] = "input_aspirasi.status = '$status'";
+}
+
+// gabungkan semua kondisi
+$whereSQL = '';
+if (!empty($where)) {
+  $whereSQL = 'WHERE ' . implode(' AND ', $where);
+}
+
+
+$queryaspirasi = mysqli_query($koneksi, "
+SELECT input_aspirasi.id_pelaporan,
+       input_aspirasi.nis, 
+       siswa.nama, 
+       input_aspirasi.date, 
+       kategori.jenis_kategori, 
+       input_aspirasi.lokasi, 
+       input_aspirasi.keterangan, 
+       input_aspirasi.status, 
+       input_aspirasi.feedback 
+FROM input_aspirasi 
+INNER JOIN kategori ON input_aspirasi.id_kategori = kategori.id_kategori 
+INNER JOIN siswa ON input_aspirasi.nis = siswa.nis
+$whereSQL
+ORDER BY input_aspirasi.date DESC
+");
+
 ?>
 
 <!Doctype html>
@@ -84,8 +126,11 @@ $queryaspirasi = mysqli_query($koneksi, "SELECT input_aspirasi.id_pelaporan,inpu
         <i class="bi bi-arrow-left"></i> Kembali
       </a>
     </div>
-    <!-- FORM FILTER TANGGAL -->
+
+
     <form method="GET" class="row g-3 mb-4">
+
+      <!-- FORM FILTER TANGGAL -->
       <div class="col-auto">
         <label>Dari Tanggal</label>
         <input type="date" name="dari" class="form-control" value="<?= isset($_GET['dari']) ? $_GET['dari'] : '' ?>">
@@ -94,6 +139,39 @@ $queryaspirasi = mysqli_query($koneksi, "SELECT input_aspirasi.id_pelaporan,inpu
         <label>Sampai Tanggal</label>
         <input type="date" name="sampai" class="form-control" value="<?= isset($_GET['sampai']) ? $_GET['sampai'] : '' ?>">
       </div>
+
+      <!-- filter nama siswa -->
+      <div class="col-auto">
+        <label>Nama Siswa</label>
+        <input type="text" name="nama" class="form-control" placeholder="Cari nama siswa" value="<?= isset($_GET['nama']) ? $_GET['nama'] : '' ?>">
+      </div>
+
+      <!-- filter kategori -->
+      <div class="col-auto">
+        <label>Kategori</label>
+        <select name="kategori" class="form-select">
+          <option value="">-- Semua Kategori --</option>
+          <?php
+          $querykategori = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY jenis_kategori ASC");
+          while ($kat = mysqli_fetch_array($querykategori)) {
+            $selected = (isset($_GET['kategori']) && $_GET['kategori'] == $kat['id_kategori']) ? 'selected' : '';
+            echo "<option value='{$kat['id_kategori']}' $selected>{$kat['jenis_kategori']}</option>";
+          }
+          ?>
+        </select>
+      </div>
+
+      <!-- filter status -->
+      <div class="col-auto">
+        <label>Status</label>
+        <select name="status" class="form-select">
+          <option value="">-- Semua Status --</option>
+          <option value="Diproses" <?= (isset($_GET['status']) && $_GET['status'] == 'Diproses') ? 'selected' : '' ?>>Diproses</option>
+          <option value="Selesai" <?= (isset($_GET['status']) && $_GET['status'] == 'Selesai') ? 'selected' : '' ?>>Selesai</option>
+          <option value="Ditolak" <?= (isset($_GET['status']) && $_GET['status'] == 'Ditolak') ? 'selected' : '' ?>>Ditolak</option>
+        </select>
+      </div>
+
       <div class="col-auto align-self-end">
         <button type="submit" class="btn btn-primary mb-3">
           <i class="bi bi-filter"></i> Filter
@@ -104,12 +182,13 @@ $queryaspirasi = mysqli_query($koneksi, "SELECT input_aspirasi.id_pelaporan,inpu
       </div>
     </form>
 
+
     <table class="table table-hover">
       <thead>
         <tr>
           <th>No</th>
           <th>Tanggal</th>
-          <th>NIS</th>
+          <th>Nama</th>
           <th>Kategori</th>
           <th>Lokasi</th>
           <th>Keterangan</th>
@@ -126,7 +205,7 @@ $queryaspirasi = mysqli_query($koneksi, "SELECT input_aspirasi.id_pelaporan,inpu
           <tr>
             <td><?php echo $no++; ?></td>
             <td><?php echo $datapengaduan['date']; ?></td>
-            <td><?php echo $datapengaduan['nis']; ?></td>
+            <td><?php echo $datapengaduan['nama']; ?></td>
             <td><?php echo $datapengaduan['jenis_kategori']; ?></td>
             <td><?php echo $datapengaduan['lokasi']; ?></td>
             <td><?php echo $datapengaduan['keterangan']; ?></td>

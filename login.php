@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -206,6 +210,14 @@
                 <input type="text" name="passwordsiswa" placeholder="Masukkan password">
             </div>
 
+            <?php if (isset($_SESSION['error'])): ?>
+                <p style="color:red; margin-bottom:15px; text-align:center;">
+                    <?= $_SESSION['error']; ?>
+                </p>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+
+
             <button type="submit" name="login" class="login-btn">Login</button>
         </form>
     </div>
@@ -229,4 +241,5 @@
     </script>
 
 </body>
+
 </html>

@@ -182,7 +182,7 @@
                 <i class="bi "></i>
                 Selamat Datang
             </h1>
-            <p>Selamat datang di website pengaduan SMK TI Muhammadiyah Cikampek</p>
+            <p>Di website pengaduan SMK TI Muhammadiyah Cikampek</p>
             <a href="login.php" class="login-btn">
                 <i class="bi bi-hand-thumbs-up-fill"></i>
                 Login

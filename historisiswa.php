@@ -1,6 +1,15 @@
 <?php
 session_start();
-include '../koneksi.php';
+include 'koneksi.php';
+
+// pastikan siswa sudah login
+if (!isset($_SESSION['nis'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// ambil NIS user yang login
+$nis = mysqli_real_escape_string($koneksi, $_SESSION['nis']);
 
 
 // ambil data yang statusnya BUKAN Diproses
@@ -15,8 +24,10 @@ $query = mysqli_query($koneksi, "
     FROM input_aspirasi
     INNER JOIN kategori ON input_aspirasi.id_kategori = kategori.id_kategori
     WHERE input_aspirasi.status IN ('Selesai', 'Ditolak')
+      AND input_aspirasi.nis = '$nis'
     ORDER BY input_aspirasi.date DESC
 ");
+
 ?>
 
 
@@ -161,7 +172,7 @@ $query = mysqli_query($koneksi, "
         </tbody>
     </table>
 
-    <a href="halamanadmin.php" class="btn btn-secondary">⬅ Kembali</a>
+    <a href="halamansiswa.php" class="btn btn-secondary">⬅ Kembali</a>
 </div>
 
 </body>

@@ -1,49 +1,42 @@
 <?php
 session_start();
 
-// Koneksi DB
 $conn = mysqli_connect("localhost", "root", "", "aspirasi");
 
-$error = '';
-
 if (isset($_POST['login'])) {
+
     $role = $_POST['role'];
 
-    if ($role === 'admin') {
-        $username = $_POST['username'] ?? '';
-        $passwordadmin = $_POST['passwordadmin'] ?? '';
+    // Tentukan tabel, field, dan redirect berdasarkan role
+    if ($role == 'admin') {
+        $field1 = $_POST['username'] ?? '';
+        $field2 = $_POST['passwordadmin'] ?? '';
+        $table  = "admin";
+        $col1   = "username";
+        $col2   = "password";
+        $redirect = "admin/halamanadmin.php";
+    } else {
+        $field1 = $_POST['nis'] ?? '';
+        $field2 = $_POST['passwordsiswa'] ?? '';
+        $table  = "siswa";
+        $col1   = "nis";
+        $col2   = "password";
+        $redirect = "halamansiswa.php";
+    }
 
-        $stmt = $conn->prepare("SELECT * FROM admin WHERE username=? AND password=?");
-        $stmt->bind_param("ss", $username, $passwordadmin);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    $stmt = $conn->prepare("SELECT * FROM $table WHERE $col1=? AND $col2=?");
+    $stmt->bind_param("ss", $field1, $field2);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            $_SESSION['user_type'] = 'admin';
-            $_SESSION['username'] = $username;
-            header("Location: admin/halamanadmin.php");
-            exit;
-        } else {
-            $error = "Login admin gagal!";
-        }
-
-    } else { // siswa
-        $nis = $_POST['nis'] ?? '';
-        $passwordsiswa = $_POST['passwordsiswa']?? '';
-
-        $stmt = $conn->prepare("SELECT * FROM siswa WHERE nis=? AND password=?");
-        $stmt->bind_param("ss", $nis, $passwordsiswa);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $_SESSION['user_type'] = 'siswa';
-            $_SESSION['nis'] = $nis;
-            header("Location: halamansiswa.php");
-            exit;
-        } else {
-            $error = "NIS tidak terdaftar!";
-        }
+    if ($result->num_rows > 0) {
+        $_SESSION['user_type'] = $role;
+        $_SESSION[$col1] = $field1;
+        header("Location: $redirect");
+        exit;
+    } else {
+        $_SESSION['error'] = "NIS, username atau password salah!";
+        header("Location: login.php");
+        exit;
     }
 }
-?>

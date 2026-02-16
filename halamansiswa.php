@@ -1,3 +1,22 @@
+<?php
+session_start();
+include 'koneksi.php';
+
+// cek login
+if (!isset($_SESSION['nis'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$nis = $_SESSION['nis'];
+
+// ambil data siswa untuk ditampilkan di navbar
+$query = mysqli_query($koneksi, "SELECT nama FROM siswa WHERE nis = '$nis'");
+$user = mysqli_fetch_assoc($query);
+$nama_siswa = $user ? $user['nama'] : $nis; // fallback ke NIS jika nama kosong
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -47,12 +66,8 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            transition: all 0.3s ease;
         }
 
-        nav .logo:hover {
-            transform: scale(1.05);
-        }
 
         nav .logo i {
             font-size: 2rem;
@@ -166,6 +181,17 @@
             margin: 0;
         }
 
+         .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-weight: 500;
+        }
+        .profile-info i {
+            font-size: 1.2rem;
+        }
+
         @media (max-width: 768px) {
             nav .container {
                 flex-direction: column;
@@ -196,7 +222,12 @@
                 Aspirasi
             </div>
             <div class="nav-menu">
-                <a href="#histori.php">Histori</a>
+                <a href="historisiswa.php">Histori</a>
+                <!-- profile + nama -->
+                <div class="profile-info">
+                    <i class="bi bi-person-circle"></i>
+                    <span><?= htmlspecialchars($nama_siswa) ?></span>
+                </div>
                 <a href="login.php" class="logout-btn">Logout</a>
             </div>
         </div>
@@ -205,7 +236,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="container">
-            <h1>Dashboard Siswa</h1>
+            <h1>Selamat Datang Di Halaman Siswa !</h1>
 
             <div class="menu-grid">
                 <a href="form-pengaduan.php" class="menu-card">
@@ -218,7 +249,7 @@
                     <h3>Data Pengaduan</h3>
                     <p>Lihat pengaduan yang sudah kamu kirim</p>
                 </a>
-                <a href="#histori.php" class="menu-card">
+                <a href="gantipassword.php" class="menu-card">
                     <i class="bi bi-key-fill"></i>
                     <h3>Ganti Password</h3>
                     <p>Ubah password akun kamu</p>
