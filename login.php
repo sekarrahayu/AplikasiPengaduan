@@ -205,10 +205,13 @@ session_start();
                 <input type="text" name="nis" placeholder="Masukkan NIS">
             </div>
 
-            <div class="form-group" id="passwordsiswa">
+            <div class="form-group" id="passwordsiswa" style="position: relative;">
                 <label>Password</label>
-                <input type="text" name="passwordsiswa" placeholder="Masukkan password">
+                <input type="password" name="passwordsiswa" id="inputPasswordSiswa" placeholder="Masukkan password">
+                <i class="bi bi-eye" id="toggleSiswa"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.1rem; color:#333; margin-top: 12px;"></i>
             </div>
+
 
             <?php if (isset($_SESSION['error'])): ?>
                 <p style="color:red; margin-bottom:15px; text-align:center;">
@@ -223,6 +226,7 @@ session_start();
     </div>
 
     <script>
+        //untuk hide 
         function setrole(role) {
             document.getElementById('role').value = role;
 
@@ -238,6 +242,19 @@ session_start();
                 document.getElementById('passwordsiswa').style.display = 'block';
             }
         }
+
+        // toggle password siswa
+        const toggleSiswa = document.getElementById('toggleSiswa');
+        const inputPasswordSiswa = document.getElementById('inputPasswordSiswa');
+
+        toggleSiswa.addEventListener('click', function() {
+            const type = inputPasswordSiswa.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPasswordSiswa.setAttribute('type', type);
+
+            // Ganti icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
     </script>
 
 </body>
