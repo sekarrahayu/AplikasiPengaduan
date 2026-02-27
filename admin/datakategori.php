@@ -17,32 +17,8 @@ if (isset($_GET['hapus'])) {
         exit;
     }
 }
-
-// Proses update kategori
-if (isset($_POST['update'])) {
-    $id = $_POST['id_kategori'];
-    $nama = $_POST['jenis_kategori'];
-    $update = mysqli_query($koneksi, "UPDATE kategori SET jenis_kategori='$nama' WHERE id_kategori='$id'");
-
-    if ($update) {
-        echo "<script>alert('Kategori berhasil diupdate'); window.location.href='datakategori.php';</script>";
-        exit;
-    } else {
-        echo "<script>alert('Kategori gagal diupdate'); window.location.href='datakategori.php';</script>";
-        exit;
-    }
-}
-
 // Ambil data kategori
 $querykategori = mysqli_query($koneksi, "SELECT * FROM kategori");
-
-// Jika ada edit, ambil data kategori untuk form edit
-$editData = null;
-if (isset($_GET['edit'])) {
-    $id = $_GET['edit'];
-    $editQuery = mysqli_query($koneksi, "SELECT * FROM kategori WHERE id_kategori='$id'");
-    $editData = mysqli_fetch_array($editQuery);
-}
 
 ?>
 
@@ -107,30 +83,11 @@ if (isset($_GET['edit'])) {
 <body>
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">Data Pengaduan</h1>
+            <h1 class="mb-0">Data Kategori</h1>
             <a href="halamanadmin.php" class="btn btn-light">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
-
-        <!-- Form Edit (muncul jika edit diklik) -->
-        <?php if ($editData): ?>
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5>Edit Kategori</h5>
-                    <form method="post">
-                        <input type="hidden" name="id_kategori" value="<?= $editData['id_kategori'] ?>">
-                        <div class="mb-3">
-                            <label>Nama Kategori</label>
-                            <input type="text" name="jenis_kategori" class="form-control" value="<?= $editData['jenis_kategori'] ?>" required>
-                        </div>
-                        <button type="submit" name="update" class="btn btn-primary">Simpan</button>
-                        <a href="datakategori.php" class="btn btn-secondary">Batal</a>
-                    </form>
-                </div>
-            </div>
-        <?php endif; ?>
-
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -150,7 +107,7 @@ if (isset($_GET['edit'])) {
                         <td><?php echo $datakategori['tanggal']; ?></td>
                         <td><?php echo $datakategori['jenis_kategori']; ?></td>
                         <td>
-                            <a href="?edit=<?= $datakategori['id_kategori'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="editdatakategori.php?edit=<?= $datakategori['id_kategori'] ?>" class="btn btn-warning btn-sm">Edit</a>
                             <a href="?hapus=<?= $datakategori['id_kategori'] ?>"
                                 class="btn btn-danger"
                                 onclick="return confirm('Apakah yakin ingin menghapus kategori ini?');">

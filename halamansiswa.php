@@ -181,13 +181,14 @@ $nama_siswa = $user ? $user['nama'] : $nis; // fallback ke NIS jika nama kosong
             margin: 0;
         }
 
-         .profile-info {
+        .profile-info {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             color: white;
             font-weight: 500;
         }
+
         .profile-info i {
             font-size: 1.2rem;
         }
@@ -228,7 +229,7 @@ $nama_siswa = $user ? $user['nama'] : $nis; // fallback ke NIS jika nama kosong
                     <i class="bi bi-person-circle"></i>
                     <span><?= htmlspecialchars($nama_siswa) ?></span>
                 </div>
-                <a href="login.php" class="logout-btn">Logout</a>
+                <a href="login.php" class="logout-btn" onclick="confirmLogout()">Logout</a>
             </div>
         </div>
     </nav>
@@ -257,6 +258,13 @@ $nama_siswa = $user ? $user['nama'] : $nis; // fallback ke NIS jika nama kosong
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmLogout() {
+            return confirm("Apakah anda yakin ingin log out?");
+        }
+    </script>
+
 </body>
 
 </html>

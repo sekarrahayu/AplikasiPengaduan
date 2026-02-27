@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ganti Password</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <style>
     /* Page background gradient: ocean blue -> skyblue -> white */
     html, body {
@@ -156,12 +157,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
 
     <form action="" method="POST">
-        <input type="password" name="password_lama" placeholder="Password Lama" required>
-        <input type="password" name="password_baru" placeholder="Password Baru" required>
-        <input type="password" name="password_baru_confirm" placeholder="Konfirmasi Password Baru" required>
+        <div id="PasswordLama" style="position: relative;">
+            <input id="inputPasswordLama" type="password" name="password_lama" placeholder="Password Lama" required>
+            <i class="bi bi-eye" id="togglePasswordLama"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-70%); cursor:pointer; font-size:1.1rem; color:#333;"></i>
+        </div>
+        <div id="PasswordBaru" style="position: relative;">
+            <input id="inputPasswordBaru" type="password" name="password_baru" placeholder="Password Baru" required>
+            <i class="bi bi-eye" id="togglePasswordBaru"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-70%); cursor:pointer; font-size:1.1rem; color:#333;"></i>
+        </div>
+        <div id="PasswordConfirm" style="position: relative;">
+            <input id="inputPasswordConfirm" type="password" name="password_baru_confirm" placeholder="Konfirmasi Password Baru" required>
+            <i class="bi bi-eye" id="togglePasswordConfirm"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-70%); cursor:pointer; font-size:1.1rem; color:#333;"></i>
+        </div>
         <input type="submit" value="Ganti Password">
     </form>
-</div>
+    </div>
+    
+    <script>
+        
+        // toggle password lama
+        const togglePasswordLama = document.getElementById('togglePasswordLama');
+        const inputPasswordLama = document.getElementById('inputPasswordLama');
 
+        togglePasswordLama.addEventListener('click', function() {
+            const type = inputPasswordLama.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPasswordLama.setAttribute('type', type);
+
+            // Ganti icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+
+        // toggle password baru
+        const togglePasswordBaru = document.getElementById('togglePasswordBaru');
+        const inputPasswordBaru = document.getElementById('inputPasswordBaru');
+
+        togglePasswordBaru.addEventListener('click', function() {
+            const type = inputPasswordBaru.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPasswordBaru.setAttribute('type', type);
+
+            // Ganti icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+
+        // toggle password confirm
+        const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+        const inputPasswordConfirm = document.getElementById('inputPasswordConfirm');
+
+        togglePasswordConfirm.addEventListener('click', function() {
+            const type = inputPasswordConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPasswordConfirm.setAttribute('type', type);
+
+            // Ganti icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    </script>
 </body>
 </html>

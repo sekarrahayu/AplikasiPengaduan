@@ -77,7 +77,8 @@ ORDER BY input_aspirasi.date DESC
     }
 
     .container {
-      max-width: 1000px;
+      padding: 25px;
+      max-width: 1250px;
       margin: 0 auto;
     }
 

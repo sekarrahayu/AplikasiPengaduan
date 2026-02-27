@@ -181,8 +181,8 @@ session_start();
         </h1>
 
         <div class="role-buttons">
-            <button type="button" onclick="setrole('admin')">Admin</button>
-            <button type="button" onclick="setrole('siswa')">Siswa</button>
+            <button type="button" id="btnAdmin" onclick="setrole('admin')">Admin</button>
+            <button type="button" id="btnSiswa" onclick="setrole('siswa')" class="active">Siswa</button>
         </div>
 
         <form method="POST" action="proseslogin.php">
@@ -194,9 +194,11 @@ session_start();
                 <input type="text" name="username" placeholder="Masukkan username">
             </div>
 
-            <div class="form-group" id="passwordadmin" style="display:none;">
+            <div class="form-group" id="passwordadmin" style="display:none; position: relative;">
                 <label>Password</label>
-                <input type="password" name="passwordadmin" placeholder="Masukkan password">
+                <input type="password" name="passwordadmin" id="inputPasswordAdmin" placeholder="Masukkan password">
+                <i class="bi bi-eye" id="toggleAdmin"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:1.1rem; color:#333; margin-top: 12px;"></i>
             </div>
 
             <!-- SISWA -->
@@ -230,18 +232,53 @@ session_start();
         function setrole(role) {
             document.getElementById('role').value = role;
 
+            const btnAdmin = document.getElementById('btnAdmin');
+            const btnSiswa = document.getElementById('btnSiswa');
+
             if (role === 'admin') {
                 document.getElementById('usernameField').style.display = 'block';
                 document.getElementById('passwordadmin').style.display = 'block';
                 document.getElementById('nisField').style.display = 'none';
                 document.getElementById('passwordsiswa').style.display = 'none';
+
+                btnAdmin.classList.add('active');
+                btnSiswa.classList.remove('active');
             } else {
                 document.getElementById('usernameField').style.display = 'none';
                 document.getElementById('passwordadmin').style.display = 'none';
                 document.getElementById('nisField').style.display = 'block';
                 document.getElementById('passwordsiswa').style.display = 'block';
+
+                btnSiswa.classList.add('active');
+                btnAdmin.classList.remove('active');
             }
         }
+        
+
+        // Validasi form sebelum submit
+        const form = document.querySelector("form");
+
+        form.addEventListener('submit', function(e) {
+            const role = document.getElementById('role').value;
+
+            if (role === 'admin') {
+                const username = document.querySelector("input[name='username']").value.trim();
+                const passAdmin = document.querySelector("input[name='passwordadmin']").value.trim();
+
+                if (!username || !passAdmin) {
+                    e.preventDefault(); // stop form submit
+                    alert("Username dan password admin wajib diisi!");
+                }
+            } else {
+                const nis = document.querySelector("input[name='nis']").value.trim();
+                const passSiswa = document.querySelector("input[name='passwordsiswa']").value.trim();
+
+                if (!nis || !passSiswa) {
+                    e.preventDefault(); // stop form submit
+                    alert("NIS dan password siswa wajib diisi!");
+                }
+            }
+        });
 
         // toggle password siswa
         const toggleSiswa = document.getElementById('toggleSiswa');
@@ -250,6 +287,19 @@ session_start();
         toggleSiswa.addEventListener('click', function() {
             const type = inputPasswordSiswa.getAttribute('type') === 'password' ? 'text' : 'password';
             inputPasswordSiswa.setAttribute('type', type);
+
+            // Ganti icon
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+
+        // toggle password admin
+        const toggleAdmin = document.getElementById('toggleAdmin');
+        const inputPasswordAdmin = document.getElementById('inputPasswordAdmin');
+
+        toggleAdmin.addEventListener('click', function() {
+            const type = inputPasswordAdmin.getAttribute('type') === 'password' ? 'text' : 'password';
+            inputPasswordAdmin.setAttribute('type', type);
 
             // Ganti icon
             this.classList.toggle('bi-eye');

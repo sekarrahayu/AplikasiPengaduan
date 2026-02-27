@@ -2,52 +2,6 @@
 session_start();
 include '../koneksi.php';
 
-// ambil filter dari URL (GET)
-$dari = isset($_GET['dari']) ? $_GET['dari'] : '';
-$sampai = isset($_GET['sampai']) ? $_GET['sampai'] : '';
-$nama = isset($_GET['nama']) ? $_GET['nama'] : '';
-$kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
-$status = isset($_GET['status']) ? $_GET['status'] : '';
-
-$where = [];
-
-// filter tanggal
-if ($dari && $sampai) {
-  $where[] = "input_aspirasi.date BETWEEN '$dari' AND '$sampai'";
-} elseif ($dari) {
-  $where[] = "input_aspirasi.date >= '$dari'";
-} elseif ($sampai) {
-  $where[] = "input_aspirasi.date <= '$sampai'";
-}
-
-// filter nama
-if ($nama) {
-  $where[] = "siswa.nama LIKE '%$nama%'";
-}
-
-// filter kategori
-if ($kategori) {
-  $where[] = "input_aspirasi.id_kategori = '$kategori'";
-}
-
-// filter status
-if ($status) {
-  $where[] = "input_aspirasi.status = '$status'";
-}
-
-$conditions = ["input_aspirasi.status IN ('Selesai','Ditolak')"]; // default
-if (!empty($where)) {
-    $conditions = array_merge($conditions, $where); // gabungkan
-}
-
-$whereSQL = '';
-if (!empty($conditions)) {
-    $whereSQL = 'WHERE ' . implode(' AND ', $conditions);
-}
-
-
-
-
 
 // ambil data yang statusnya BUKAN Diproses
 $query = mysqli_query($koneksi, "
@@ -62,7 +16,7 @@ $query = mysqli_query($koneksi, "
     FROM input_aspirasi
     INNER JOIN kategori ON input_aspirasi.id_kategori = kategori.id_kategori
     INNER JOIN siswa ON input_aspirasi.nis = siswa.nis
-    $whereSQL
+    WHERE input_aspirasi.status != 'Diproses'
     ORDER BY input_aspirasi.date DESC
 ");
 ?>
@@ -162,61 +116,10 @@ $query = mysqli_query($koneksi, "
 <body>
 
 <div class="container mt-5">
+    <div class="text-end">
+        <a href="halamanadmin.php" class="btn btn-secondary" style="background-color: white; color: black;">⬅ Kembali</a>
+    </div>
     <h3 class="mb-4">📜 History Pengaduan</h3>
-
-     <form method="GET" class="row g-3 mb-4">
-
-      <!-- FORM FILTER TANGGAL -->
-      <div class="col-auto">
-        <label>Dari Tanggal</label>
-        <input type="date" name="dari" class="form-control" value="<?= isset($_GET['dari']) ? $_GET['dari'] : '' ?>">
-      </div>
-      <div class="col-auto">
-        <label>Sampai Tanggal</label>
-        <input type="date" name="sampai" class="form-control" value="<?= isset($_GET['sampai']) ? $_GET['sampai'] : '' ?>">
-      </div>
-
-      <!-- filter nama siswa -->
-      <div class="col-auto">
-        <label>Nama Siswa</label>
-        <input type="text" name="nama" class="form-control" placeholder="Cari nama siswa" value="<?= isset($_GET['nama']) ? $_GET['nama'] : '' ?>">
-      </div>
-
-      <!-- filter kategori -->
-      <div class="col-auto">
-        <label>Kategori</label>
-        <select name="kategori" class="form-select">
-          <option value="">-- Semua Kategori --</option>
-          <?php
-          $querykategori = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY jenis_kategori ASC");
-          while ($kat = mysqli_fetch_array($querykategori)) {
-            $selected = (isset($_GET['kategori']) && $_GET['kategori'] == $kat['id_kategori']) ? 'selected' : '';
-            echo "<option value='{$kat['id_kategori']}' $selected>{$kat['jenis_kategori']}</option>";
-          }
-          ?>
-        </select>
-      </div>
-
-      <!-- filter status -->
-      <div class="col-auto">
-        <label>Status</label>
-        <select name="status" class="form-select">
-          <option value="">-- Semua Status --</option>
-          <option value="Diproses" <?= (isset($_GET['status']) && $_GET['status'] == 'Diproses') ? 'selected' : '' ?>>Diproses</option>
-          <option value="Selesai" <?= (isset($_GET['status']) && $_GET['status'] == 'Selesai') ? 'selected' : '' ?>>Selesai</option>
-          <option value="Ditolak" <?= (isset($_GET['status']) && $_GET['status'] == 'Ditolak') ? 'selected' : '' ?>>Ditolak</option>
-        </select>
-      </div>
-
-      <div class="col-auto align-self-end">
-        <button type="submit" class="btn btn-primary mb-3">
-          <i class="bi bi-filter"></i> Filter
-        </button>
-        <a href="historiadmin.php" class="btn btn-secondary mb-3">
-          <i class="bi bi-x-circle"></i> Reset
-        </a>
-      </div>
-    </form>
 
     <table class="table table-bordered table-hover bg-white">
         <thead class="table-primary text-center">
@@ -265,7 +168,7 @@ $query = mysqli_query($koneksi, "
         </tbody>
     </table>
 
-    <a href="halamanadmin.php" class="btn btn-secondary">⬅ Kembali</a>
+    
 </div>
 
 </body>

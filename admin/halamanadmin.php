@@ -193,7 +193,7 @@
                 <a href="datasiswa.php">Data Siswa</a>
                 <a href="dataaspirasi.php">Data Pengaduan</a>
                 <a href="historiadmin.php">Histori</a>
-                <a href="../login.php" class="logout-btn">Logout</a>
+                <a href="../login.php" class="logout-btn" onclick="confirmLogout()">Logout</a>
             </div>
         </div>
     </nav>
@@ -217,5 +217,11 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmLogout(){
+            return confirm('Apakah Anda yakin ingin Logout?')
+        }
+    </script>
 </body>
 </html>

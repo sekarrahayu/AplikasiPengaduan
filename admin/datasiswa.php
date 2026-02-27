@@ -17,36 +17,8 @@ if (isset($_GET['hapus'])) {
   }
 }
 
-// Proses update
-if (isset($_POST['update'])) {
-    $nis_lama = $_POST['nis_lama'];
-    $nis = $_POST['nis'];
-    $nama = $_POST['nama'];
-    $kelas = $_POST['kelas'];
-    $password = $_POST['password'];
-
-    $update = mysqli_query($koneksi, "
-        UPDATE siswa SET 
-            nis='$nis',
-            nama='$nama',
-            kelas='$kelas',
-            password='$password'
-        WHERE nis='$nis_lama'
-    ");
-
-    if ($update) {
-        echo "<script>alert('Data berhasil diubah'); window.location.href='datasiswa.php';</script>";
-        exit;
-    } else {
-        echo "Gagal mengubah data: " . mysqli_error($koneksi);
-    }
-}
-
 // Ambil semua data siswa
 $querydatasiswa = mysqli_query($koneksi, "SELECT * FROM siswa");
-
-// Cek nis yang akan diedit
-$nis_edit = $_GET['edit'] ?? '';
 
 ?>
 
@@ -139,7 +111,7 @@ $nis_edit = $_GET['edit'] ?? '';
             <td><?php echo $data['kelas']; ?></td>
             <td><?php echo $data['password']; ?></td>
             <td>
-               <a href="?edit=<?= $data['nis']; ?>" class="btn btn-sm btn-warning">Edit</a>
+               <a href="editdatasiswa.php?edit=<?= $data['nis'] ?>" class="btn btn-sm btn-warning">Edit</a>
               <a href="?hapus=<?= $data['nis'] ?>"
                 class="btn btn-danger"
                 onclick="return confirm('Apakah yakin ingin menghapus siswa ini?');">
@@ -148,25 +120,6 @@ $nis_edit = $_GET['edit'] ?? '';
             </td>
 
           </tr>
-
-           <?php if ($nis_edit == $data['nis']) { ?>
-            <!-- Form Edit Inline -->
-            <tr style="background:#f9f9f9;">
-                <td colspan="6">
-                    <form method="POST" class="d-flex gap-2 flex-wrap align-items-center">
-                        <input type="hidden" name="nis_lama" value="<?= $data['nis'] ?>">
-                        <input type="text" name="nis" value="<?= $data['nis'] ?>" class="form-control" placeholder="NIS" required>
-                        <input type="text" name="nama" value="<?= $data['nama'] ?>" class="form-control" placeholder="Nama" required>
-                        <input type="text" name="kelas" value="<?= $data['kelas'] ?>" class="form-control" placeholder="Kelas" required>
-                        <input type="text" name="password" value="<?= $data['password'] ?>" class="form-control" placeholder="Password" required>
-                        <button type="submit" name="update" class="btn btn-success">Simpan</button>
-                        <a href="datasiswa.php" class="btn btn-secondary">Batal</a>
-                    </form>
-                </td>
-            </tr>
-            <?php } ?>
-
-
         <?php } ?>
       </tbody>
     </table>
